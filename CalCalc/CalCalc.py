@@ -8,19 +8,20 @@ import urllib
 from xml.dom.minidom import parseString
 
 def getText(nodelist):
-	""" gets text information from the parse of a specific tag """
-    rc = []
-    for node in nodelist:
-        if node.nodeType == node.TEXT_NODE:
-            rc.append(node.data)
-    return ''.join(rc)
+	""" 
+gets text information from the parse of a specific tag 
+	"""
+	rc = []
+	for node in nodelist:
+		if node.nodeType == node.TEXT_NODE:
+			rc.append(node.data)
+	return ''.join(rc)
 
 def calculate(question, askAPI=False, return_float=False):
 	"""
-	Purpose: Evaluates any string passed into into if it is not able to perform basic calculations on its own, it will query wolframalpha
-	input: question: the string to evaluate, askAPI: (default=False) force question to wolframalpha, return_float (default=False) force return of float answer
+Purpose: Evaluates any string passed into into if it is not able to perform basic calculations on its own, it will query wolframalpha
+input: question: the string to evaluate, askAPI: (default=False) force question to wolframalpha, return_float (default=False) force return of float answer
 	"""
-
 	comp = re.compile("[a-zA-Z]")
 	if comp.search(question)==None and not askAPI:
 		try:
