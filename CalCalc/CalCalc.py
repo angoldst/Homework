@@ -1,7 +1,9 @@
 import argparse
 import re
-import wolframalpha
+#import wolframalpha
 import sys
+import urllib2
+import urllib
 
 
 
@@ -13,30 +15,37 @@ def calculate(question, askAPI=False, return_float=False):
 		except IOError, e:
 			pass
 	else:
-		
-		client = wolframalpha.Client('UAGAWR-3X6Y8W777Q')
-		res = client.query('%s' %question)
-		ans = next(res.results).text
+		print 'asking wolframalpha'
+		#client = wolframalpha.Client('UAGAWR-3X6Y8W777Q')
+		#res = client.query('%s' %question)
+		url = 'http://api.wolframalpha.com/v2/query?input=%s&appid=UAGAWR-3X6Y8W777Q' %question.replace(" ", "+")
+		ansURL = urllib2.urlopen(url)
+		ansURLText = ansURL.read()
+		podStart = ansURLText.find("pod title='Result'")
+		podEnd = ansURLText[podStart:].find("</pod>\n")+podStart
+	
+		ansSeg = ansURLText[podStart:podEnd]
+
+		ans = re.findall("<plaintext>(.*?)</plaintext>", ansSeg)
+		ans = ans[0]
+
+		#ans = next(res.results).text
 		if return_float:
-			nums = re.compile("[0-9\+\-\*\^\.]+")
-			ans = ans.encode('ascii', 'replace')
-			ans=ans.replace('?', '*') 
-			ans=ans.replace('^', '**')
+		 	nums = re.compile("[0-9\+\-\*\^\.]+")
+		 	#ans = ans.encode('ascii', 'replace')
+		 	ans=ans.replace('\xc3\x97', '*') 
+		 	ans=ans.replace('^', '**')
 
-			answer=re.findall(nums, ans)
+		 	answer=re.findall(nums, ans)
 			
-			try:
-				print 'asking wolframalpha'
-				print eval(answer[0])
+		 	try:		 		
+		 		print eval(answer[0])
 				return float(eval(answer[0]))
-
-
-			except IOError, e:
-				pass
-				
+		 	except IOError, e:
+		 		pass
 		else:	
-				print 'asking wolframalpha'
-				print ans			
+		 		
+		 		print ans			
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='CalCalculate Input')
