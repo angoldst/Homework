@@ -1,7 +1,7 @@
 
 CalCalc README
 ---------------------------
-To add CalCalc module open terminal cd into directory and type: python setup.py install
+To add CalCalc module open terminal cd into directory and type: python setup.py install or sudo python setup.py install if you need permissions
 
 CalCalc main function is calculate which accepts any string and attempts to evaluate the request. If it's an easy math calculation, calculate will return answer using eval(), if this is not possible it will query wolfram alpha. 
 
