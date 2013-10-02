@@ -1,10 +1,11 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf510
 {\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fnil\fcharset0 LucidaGrande;}
 {\colortbl;\red255\green255\blue255;}
-{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{square\}}{\leveltext\leveltemplateid1\'01\uc0\u9642 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
-{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
-{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
-\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{square\}}{\leveltext\leveltemplateid101\'01\uc0\u9642 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\margl1440\margr1440\vieww13820\viewh8300\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
 \f0\fs24 \cf0 ADAM -- I've made notes specifically in the script of which cells you want to run. These include the first three cells which include basic imports and helper function initialization. Since you'll be reading in csv with all of the feature details you should skip the training feature section and jump to the Helper functions for final classification, and cells after that. Again I tried to make it explicit with "ADAM RUN" titles to make it easier.\
@@ -15,15 +16,22 @@ The answers to the written homework questions are on the bottom of this document
 \
 Scripts completes feature extraction and uses a random forest classifier model to classify images. \
 \
+Folder contents:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
+\ls1\ilvl0\cf0 {\listtext	\'95	}Image_Classification.ipynb -- contains scripts for image classification\
+{\listtext	\'95	}Extracted_Features_USEME.csv -- csv file of the previously extracted features from training set\
+{\listtext	\'95	}PCA_Features_Model.p -- pickled version of the randomized PCA model will be used to extract the PCA features of the validation set according to the previously run training set\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
 
 \b Basic Work flow -- Including extracted features 
 \b0 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
-\ls1\ilvl0\cf0 {\listtext	
+\ls2\ilvl0\cf0 {\listtext	
 \f1 \uc0\u9642 
 \f0 	}Extract Basic Features -- If you are pulling already extracted features from .csv file ignore next cell and 
 \b DO NOT
-\b0  run it. This cell is only used to extract all features from all training images and saves each as an independent csv. Takes several minutes to compute \
+\b0  run it. This cell is only used to extract all features from all training images and saves each as an independent csv. Takes several minutes to compute. For some reason this function will cause the python kernel to break in some cases but not all. This seems to happen arbitrarily and has nothing to do with the inside functions since they will work on all data. If you restart the hub and try again it most likely will work.   \
 {\listtext	
 \f1 \uc0\u9642 
 \f0 	}Extract PCA Features \
@@ -38,15 +46,14 @@ Scripts completes feature extraction and uses a random forest classifier model t
 \b \cf0 \
 Basic Work flow for validation of final classifier\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
-\ls2\ilvl0\cf0 {\listtext	\'95	}
+\ls3\ilvl0\cf0 {\listtext	\'95	}
 \b0 load pickle of the random forest model\
 {\listtext	\'95	}extract basic and PCA features on validation images\
 {\listtext	\'95	}run the random forest model on the validation data set features and predict categories\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
 \b \cf0 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
-\cf0 Two types of feature extractions:
+Two types of feature extractions:
 \b0 \
 	1) Basic features which include fft, color, color symmetry, corners \
 	2) PCA derived features \
@@ -89,7 +96,7 @@ extract phase, relative and absolute magnitude of fft information for subsection
         7) splits phase/magnitude space into 16 subparts (xSeg x ySeg) and calculates the average for each subsection\
 
 \b Example Feature Name: 
-\b0 "segIm_0_2_fft_phaseAvg" represents the phase information averaged across the 0,2 sub square\
+\b0 "segIm_0_2_fft_phaseAvg_sqSize_6x6" represents the phase information averaged across the 0,2 sub square of a 6x6 grid\
 
 \b get_Edges 
 \b0 (contains Edge in feature name)
@@ -109,16 +116,27 @@ Also takes an optional parameter "thresholds" to set the threshold of voxels to 
 \b Example Feature Name: 
 \b0 "numCorn_Harris_2_.001" represents the number of corners calculated using the Harris algorithm for a minimum distance of 2 and a relative threshold of 0.001\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
-\cf0 \
+
+\b \cf0 fft_of_bool
+\b0  (contains boolIm in feature name) -- similar to the fft_info except it conducts the analyses on a thresholded image. First image is converted to bool values, filtered with the sober algorithm to detect edges and finally put through fft. \
+\
+Takes a threshold parameter (default set to .2) as well as xSeg and ySeg which set the grid (similar to the fft_info function)\
+\
+
+\b Example Feature Name:
+\b0  "segBoolIm_0_2_fft_phaseAvg_sqSize_6x6" refers to the phase average of the 0, 2 square in a 6x6 square matrix. \
+\
+\
 ##############################################################################\
 \
 Homework Answers:\
-a) My CV score had a mean accuracy of 30% and a std: .02\
+a) My CV score had a mean accuracy of 31.0% and a std: 2.6% (though this may change when you run the generate classifier model shell since it's shuffling data) \
 b) Three Important features:\
-	1) hEdge_to_vEdge_0.1 (proportion of pixels in horizontal to vertical edges with a threshold of .1)\
-	2) segIm_3_1_fft_relMag (relative power of the bottom second to the left square in fft space)\
-	3) vEdge_to_total (proportion of pixels in vertical edges to the total num of pixels)\
-c) Accuracy for random guessing would be ~1.4%, and my  model did substantially better than that  \
+	1) segBool_Im_4_0_fft_relMag_sqSize_6x6  (fft info on image reduced to edges)\
+	2) vEdge_to_Total_0.05 (proportion of pixels counted as vertical edges to total pixels with a threshold of .05)\
+	3) hEdge_to_vEdge_0.05 (proportion of horizontal to vertical edges with a threshold of .05)\
+\
+c) Accuracy for random guessing would be ~2.3% substantially worse than the model.\
  \
 \
 }
