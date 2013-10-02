@@ -1,0 +1,117 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf510
+{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{square\}}{\leveltext\leveltemplateid1\'01\uc0\u9642 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 ADAM -- I've made notes specifically in the script of which cells you want to run. These include the first three cells which include basic imports and helper function initialization. Since you'll be reading in csv with all of the feature details you should skip the training feature section and jump to the Helper functions for final classification, and cells after that. Again I tried to make it explicit with "ADAM RUN" titles to make it easier. \
+\
+The answers to the written homework questions are on the bottom of this document. \
+\
+Scripts completes feature extraction and uses a random forest classifier model to classify images. \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 Basic Work flow -- Including extracted features 
+\b0 \
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
+\ls1\ilvl0\cf0 {\listtext	
+\f1 \uc0\u9642 
+\f0 	}Initialize imports/helper functions/get feature functions (first three cells)\
+{\listtext	
+\f1 \uc0\u9642 
+\f0 	}Extract Basic Features -- If you are pulling already extracted features from .csv file ignore next cell and 
+\b DO NOT
+\b0  run it. This cell is only used to extract all features from all training images and saves each as an independent csv. Takes several minutes to compute \
+{\listtext	
+\f1 \uc0\u9642 
+\f0 	}Extract PCA Features \
+{\listtext	
+\f1 \uc0\u9642 
+\f0 	}concatenate basic and PCA features \
+{\listtext	
+\f1 \uc0\u9642 
+\f0 	}Generate/train Random forest model with cross validation \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 \
+Two types of feature extractions:
+\b0 \
+	1) Basic features which include fft, color, color symmetry, corners \
+	2) PCA derived features \
+\
+Basic features are first extracted by extract_features() method which generates a dictionary of all basic features per category. The features are saved independently for each category as a csv file.\
+\
+
+\b Basic Features Details:
+\b0 \
+\pard\pardeftab720\sa240
+
+\b \cf0 get_colorData 
+\b0 (contains the word _color_ in the feature name) -- returns color ratio and luminance information by calling ret_colorProps for the whole image and subsections of image Specifically, it segments the image into 9 pieces (using mask_seg with default segmentation)and calls ret_ColorProps. for each portion of the image (including the whole image together) returns a dictionary containing the colon proportion data for each segment of the image. The color proportion is calculated by dividing taking the mean of the color channel value across the image segment and dividing it by the sum across all channels (e.g. r = R/(R+G+B)). It also calculates the luminance by averaging across all three color channels channels. \
+
+\b Example Feature Name:
+\b0  "segIm_0_2_color red" represents the contribution of red to the 0, 2 box. \
+9 Segments:\
+| \ul    0, 0    \ulnone |\ul    0, 1    |    0, 2    \ulnone |\ul \
+\pard\pardeftab720\sa240
+\cf0 \ulnone |\ul     1, 0    |    1, 1   |    1, 2    \ulnone |\
+| \ul    2, 0    |    2, 1   |    2, 2   |\ulnone \
+\pard\pardeftab720\sa240
+
+\b \cf0 get_colorSym 
+\b0 (contains the word cSym in the feature name)
+\b  
+\b0  -- Returns color and luminance symmetry information by breaking image into top/bottom/left/right segments and then multiplying the values across axes. Greater values would then indicate larger symmetry across the image in the different directions If greyscale image only calculates data from luminance.\
+
+\b Example Feature Name: "
+\b0 ToptoBot_cSym_red" represents the multiplication of the average of the red color channel information from the top half of the image multiplied by the bottom half\
+
+\b fft_Info 
+\b0 (contains the word fft in the feature name) -- extract  fft information for subsections of image. Default splits fft space into 4x4 squares. Specifically:\
+extract phase, relative and absolute magnitude of fft information for subsections of image. \
+    Sequence:  \
+        1) flattens image \
+        2) performs fft \
+        3) calculates magnitude (np.sqrt(ff.real**2 + ff.imag**2)) \
+        4) calculates phase (np.arctan(ff.imag/ff.real))\
+        5) crops phase/magnitude to 1 quadrent of the data to remove redundent information\
+        6) calculates relative magnitude by dividing absolute magnitude its average\
+        7) splits phase/magnitude space into 16 subparts (xSeg x ySeg) and calculates the average for each subsection\
+
+\b Example Feature Name: 
+\b0 "segIm_0_2_fft_phaseAvg" represents the phase information averaged across the 0,2 sub square\
+
+\b get_Edges 
+\b0 (contains Edge in feature name)
+\b  -- 
+\b0 uses v and h sobel filters to find vertical and horizontal edges. Then it calculates \
+        1) proportion of vertical edges to number total pixels\
+        2) proportion of horizontal edges to number total pixeles\
+        3) ratio of vertical to horizontal edges\
+Also takes an optional parameter "thresholds" to set the threshold of voxels to include in the calculation. The v/h edges that are less than the threshold*maximum value are set to zero and not added to the v/h count \
+
+\b Example Feature Name: 
+\b0 "vEdge_to_Total_0.35" represents the proportion of the pixels that are counted as vertical edges to the total number of pixels, with the threshold set to 0.35 of the maximum edge value. \
+
+\b num_Corners 
+\b0 (Contains numCorn in feature name) -- calculate number of corners using harris and shi_tomasi methods. Takes optional arrays representing the minimum distance and relative threshold parameters of each of the corner detection algorithms. Will loop through and calculate number of corners for each parameter given. \
+
+\b Example Feature Name: 
+\b0 "numCorn_Harris_2_.001" represents the number of corners calculated using the Harris algorithm for a minimum distance of 2 and a relative threshold of 0.001\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+##############################################################################\
+\
+Homework Answers:\
+a) My CV score had a mean accuracy of 30% and a std: .02\
+b) Three Important features:\
+	1) hEdge_to_vEdge_0.1 (proportion of pixels in horizontal to vertical edges with a threshold of .1)\
+	2) segIm_3_1_fft_relMag (relative power of the bottom second to the left square in fft space)\
+	3) vEdge_to_total (proportion of pixels in vertical edges to the total num of pixels)\
+c) Accuracy for random guessing would be ~1.4%, and my  model did substantially better than that  \
+ \
+\
+}
