@@ -1,26 +1,25 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf510
 {\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fnil\fcharset0 LucidaGrande;}
 {\colortbl;\red255\green255\blue255;}
-{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{square\}}{\leveltext\leveltemplateid1\'01\uc0\u9642 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
-{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{square\}}{\leveltext\leveltemplateid1\'01\uc0\u9642 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
 \margl1440\margr1440\vieww10800\viewh8400\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
-\f0\fs24 \cf0 ADAM -- I've made notes specifically in the script of which cells you want to run. These include the first three cells which include basic imports and helper function initialization. Since you'll be reading in csv with all of the feature details you should skip the training feature section and jump to the Helper functions for final classification, and cells after that. Again I tried to make it explicit with "ADAM RUN" titles to make it easier. \
+\f0\fs24 \cf0 ADAM -- I've made notes specifically in the script of which cells you want to run. These include the first three cells which include basic imports and helper function initialization. Since you'll be reading in csv with all of the feature details you should skip the training feature section and jump to the Helper functions for final classification, and cells after that. Again I tried to make it explicit with "ADAM RUN" titles to make it easier.\
+\
+Also as a note, most of the color features will not work well with greyscale images since they can't accurately calculate the color information for each channel. I've put a hack in there that will change the validation image into a 3-d array so it doesn't produce nan values. I had been dropping the greyscale images from the analysis since it would be adding incorrect color information into the models.  \
 \
 The answers to the written homework questions are on the bottom of this document. \
 \
 Scripts completes feature extraction and uses a random forest classifier model to classify images. \
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
-\b \cf0 Basic Work flow -- Including extracted features 
+\b Basic Work flow -- Including extracted features 
 \b0 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
 \ls1\ilvl0\cf0 {\listtext	
-\f1 \uc0\u9642 
-\f0 	}Initialize imports/helper functions/get feature functions (first three cells)\
-{\listtext	
 \f1 \uc0\u9642 
 \f0 	}Extract Basic Features -- If you are pulling already extracted features from .csv file ignore next cell and 
 \b DO NOT
@@ -33,11 +32,21 @@ Scripts completes feature extraction and uses a random forest classifier model t
 \f0 	}concatenate basic and PCA features \
 {\listtext	
 \f1 \uc0\u9642 
-\f0 	}Generate/train Random forest model with cross validation \
+\f0 	}Generate/train Random forest model with cross validation  (You can set the useCats list to exclude/include different features in generating the model)\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
 \b \cf0 \
-Two types of feature extractions:
+Basic Work flow for validation of final classifier\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
+\ls2\ilvl0\cf0 {\listtext	\'95	}
+\b0 load pickle of the random forest model\
+{\listtext	\'95	}extract basic and PCA features on validation images\
+{\listtext	\'95	}run the random forest model on the validation data set features and predict categories\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Two types of feature extractions:
 \b0 \
 	1) Basic features which include fft, color, color symmetry, corners \
 	2) PCA derived features \
@@ -56,12 +65,10 @@ Basic features are first extracted by extract_features() method which generates 
 \b0  "segIm_0_2_color red" represents the contribution of red to the 0, 2 box. \
 9 Segments:\
 | \ul    0, 0    \ulnone |\ul    0, 1    |    0, 2    \ulnone |\ul \
-\pard\pardeftab720\sa240
-\cf0 \ulnone |\ul     1, 0    |    1, 1   |    1, 2    \ulnone |\
+\ulnone |\ul     1, 0    |    1, 1   |    1, 2    \ulnone |\
 | \ul    2, 0    |    2, 1   |    2, 2   |\ulnone \
-\pard\pardeftab720\sa240
 
-\b \cf0 get_colorSym 
+\b get_colorSym 
 \b0 (contains the word cSym in the feature name)
 \b  
 \b0  -- Returns color and luminance symmetry information by breaking image into top/bottom/left/right segments and then multiplying the values across axes. Greater values would then indicate larger symmetry across the image in the different directions If greyscale image only calculates data from luminance.\
