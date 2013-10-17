@@ -1,0 +1,26 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf510
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Hw6: \
+Andrea Goldstein\
+\
+Weather_Prediction.ipynb. The parts of the assignment are labeled. Will need several csv files for the first run through to create tables. All should be found in the hw_6_data folder. \
+\
+Specifically the script:\
+\
+1) creates two independent tables from the top_airports.csv and ICAO_airports.csv files. Then uses a sqlalchemy query to join the two tables together into a pandas data frame (tableResult). This data frame contains information on the name, city, ICAO airport code, latitude and longitude information.\
+\
+2) From the ICAO codes identified in the previous step, it collects the historical weather data from 2008 until present using weather underground website and saves each city's data into a csv file. \
+\
+3) Another function then populates a sql table with the resulting weather data specifically saving the min/max temperature, humidity, precipitation and cloud cover. \
+\
+4) Computes pairwise correlations between each airport in the top 50 airports list to see how the daily change of high temperature and cloud cover from one city predicts the daily change of the other city 1, 3, and 7 days in advance. Results in 6 correlation matrices.\
+\
+5) From these correlation matrices it identifies the pairs of cities with the highest correlation strengths for all three dates and plots the prediction strength as a function of distance as well as longitude.\
+\
+What trends do you see:\
+\
+In terms of max temperature and cloud cover as you'd predict you see greater correlations for 1 day differences in predictions in cities that are closer together. For longer time periods, you see increases in the distances between the peak cities. There also seems to be a movement in one direction (as evident by the longitude plots) in that cities are west appear to do better at predicting cities that are more east. Also, temperature predictions seem to be much better across days than cloud cover.   }
