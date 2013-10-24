@@ -1,0 +1,71 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf510
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 HW 7 \
+\
+Answers the following questions using pandas:\
+\
+\pard\pardeftab720
+
+\f1 \cf0 1) Make a DataFrame with one row per issue with the following columns extracted\
+from the issue data:\
+\
+   ``ntitle, created_at, labels, closed_at, user, id``\
+\
+Transform the user values to be simply the 'login' string, so that the user\
+column contains only string usernames.\
+\
+3) No (3) listed\
+\
+2) Remove duplicate rows by id from the DataFrame you just created using the id\
+column's duplicated method.\
+\
+4) Convert the ``created_at`` and ``closed_at columns`` from string to datetime type.\
+\
+5) Now construct appropriate time series and pandas functions to make the\
+following plots:\
+\
+- Number of issues created by month\
+\
+- Number of distinct users creating issues each month (hint: you can pass a\
+  function to resample's how argument, and there's nothing wrong with having\
+  string values in a TimeSeries)\
+\
+6) Make a table and an accompanying plot illustrating:\
+\
+- The mean number of days it took for issues to be closed by the month they\
+  were opened. In other words, for closed issues created in August 2012, how\
+  long were they open on average? (hint: use the ``total_seconds`` function on the\
+  timedelta objects computed when subtracting datetime objects). Also show the\
+  number of issues in each month in the table.\
+\
+7) Make a DataFrame containing all the comments for all of the issues. You will\
+want to add an ``id`` attribute to each comment while doing so so that each row\
+contains a single comment and has the id of the issue it belongs to.\
+\
+Convert the ``created`` column to datetime format; note you will need to multiply\
+the values (appropriately converted to integers) by 1000000 to get them in\
+nanoseconds and pass to to_datetime.\
+\
+8) For each month, compute a table summarizing the following for each month:\
+\
+- Total number of issue comments\
+- The "chattiest" user (most number of comments)\
+- The percentage of total comments made by the chattiest users\
+- The number of distinct participants in the issue comments\
+\
+9) Create a helper ``labels`` table from the issues data with two columns: id and\
+label. If an issue has 3 elements in its 'labels' value, add 3 rows to the\
+table. If an issue does not have any labels, place a single row with None as\
+the label (hint: construct a list of tuples, then make the DataFrame).\
+\
+10) Now, join the issues data with the labels helper table (pandas.merge). Add\
+a column to this table containing the number of days (as a floating point\
+number) it took to close each issue.\
+\
+11) Compute a table containing the average time to close for each label\
+type. Now make a plot comparing mean time to close by month for Enhancement\
+versus Bug issue types.}
